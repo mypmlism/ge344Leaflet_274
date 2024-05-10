@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จุดเช็คอินสถานที่ท่องเที่ยวเพชรบูรณ์</title>
+    <!-- link css leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- link js leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+<style>
+        body {
+        padding: 0;
+        margin: 0;
+        }
+        
+        html,
+        body,
+        #map {
+        height: 100%;
+        width: 100%;
+        }
+</style>
+        
+</head>
+<body>
+    <!-- แบ่งส่วนหน้าจอ -->
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script>
+        //set view map
+        var map = L.map('map').setView([16.2036569,  101.0833199], 9);
+        //import based map
+        var OSM = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+	        maxZoom: 18,
+	        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var Esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+	        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+	        maxZoom: 16
+        }).addTo(map);
+        var OPNVKarte = L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+        
+        var baseLayers = {
+            "Esri" : Esri,
+            "OPNVKarte" : OPNVKarte,
+            "OSM" : OSM,
+        }
+        L.control.layers(baseLayers).addTo(map);
+        
+        //การเพิ่มข้อมูลลงบนแผนที่
+        //var point = L.marker([13.569806859798282, 99.77554013068577],
+//{
+   //draggable: true, // Make the icon dragable
+    //title: 'อุทยานหินเขางู', // Add a title
+   //opacity: 1.5 // Adjust the opacity
+//} 
+//).addTo(map);
+
+//และข้อมูลลงในแผนที่
+//point.bindPopup("<b>อุทยานหินเขางู</b><br>จังหวัดราชบุรี")
+//.openPopup(); 
+
+//แสดงข้อมูลหลายจุด
+var phetchabun = [
+["<b>วัดพระธาตุผาซ่อนแก้ว</b><br>จังหวัดเพชรบูรณ์", 16.7902129, 101.0509558],
+["<b>อุทยานแห่งชาติเขาค้อ </b><br>จังหวัดเพชรบูรณ์", 16.5719597, 100.9780953],
+["<b>อุทยานแห่งชาติประวัติศาสตร์ศรีเทพ</b><br>จังหวัดเพชรบูรณ์", 15.4747131, 101.1467971],
+["<b>อุทยานแห่งชาติ ทุ่งแสลงหลวง</b><br>จังหวัดเพชรบูรณ์", 16.5792261, 100.8825141],
+["<b>วัดป่า ภูทับเบิก</b><br>จังหวัดเพชรบูรณ์", 16.9276560, 101.1278531],
+["<b>สะพานพ่อขุนผาเมือง(สะพานห้วยตอง)</b><br>จังหวัดเพชรบูรณ์", 16.7296371, 101.3643279],
+["<b>พระพุทธมหาธรรมราชาเฉลิมพระเกียรติ</b><br>จังหวัดเพชรบูรณ์", 16.4463420, 101.1532641],
+["<b>พิพิธภัณฑ์หล่มสัก</b><br>จังหวัดเพชรบูรณ์", 16.7775759, 101.2469203],
+["<b>ทุ่งกังหันลมเขาค้อ</b><br>จังหวัดเพชรบูรณ์", 16.6861844, 100.9925697],
+["<b>วัดธรรมยาน</b><br>จังหวัดเพชรบูรณ์" , 16.0990859,101.0205586]
+];
+
+//เปลี่ยน icon
+var greenIcon = L.icon({
+iconUrl: 'https://cdn-icons-png.freepik.com/256/2517/2517029.png?uid=R148312156&ga=GA1.1.1607880091.1715347636',
+//shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+
+iconSize: [40, 40], // size of the icon
+//shadowSize: [50, 64], // size of the shadow
+iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+//shadowAnchor: [4, 62], // the same for the shadow
+popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+for (var i = 0; i < phetchabun.length; i++) {
+
+marker = new L.marker([phetchabun[i][1], phetchabun[i][2]], {icon: greenIcon})
+    .bindPopup(phetchabun[i][0])
+    .addTo(map);
+}
+
+//description/Legend
+var legend = L.control({position:"bottomleft"});
+legend.onAdd = function(map) {
+var div = L.DomUtil.create("div", "legend");
+div.innerHTML = 
+'<p><U><b>คำอธิบายสัญลักษณ์</p></U></b>' +
+'<img src ="sunflower_2517029.png" width = 5%<p>สถานที่ท่องเที่ยวจังหวัดเพชรบูรณ์</p><hr>' +
+'<h3><b>Srinakharinwirot university</b></h3><hr>' +
+'<b>Created by Kankullanach Kanyaprasit</b><br>' +
+'<b>ID: 64103010274</b><br>'+
+'<img src="Srinakharinwirot_University_Logo.svg.png" width = 10%>';
+return div;
+};
+legend.addTo(map);
+
+    </script>
+</html>
